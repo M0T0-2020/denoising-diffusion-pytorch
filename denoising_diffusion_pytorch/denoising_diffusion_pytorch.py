@@ -23,6 +23,10 @@ def exists(x):
     return x is not None
 
 def default(val, d):
+    """
+    もし、valがNoneでなければvalを返す
+    もし　ｄが関数ならｄを返す、そうでなければｄを返す
+    """
     if exists(val):
         return val
     return d() if isfunction(d) else d
@@ -526,7 +530,7 @@ class GaussianDiffusion(nn.Module):
         assert h == img_size and w == img_size, f'height and width of image must be {img_size}'
         t = torch.randint(0, self.num_timesteps, (b,), device=device).long()
 
-        img = normalize_to_neg_one_to_one(img)
+        img = normalize_to_neg_one_to_one(img) # value range to [-1, 1]
         return self.p_losses(img, t, *args, **kwargs)
 
 # dataset classes
